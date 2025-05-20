@@ -30,7 +30,7 @@ jobs:
       - name: Run backend tests
         run: npm test --if-present
       - name: Build backend Docker image
-        run: docker build -t dev/task-tracker-app-backend:latest 
+        run: docker buildx build --load -t dev/task-tracker-app-backend:latest .
       - name: Log in to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
@@ -41,7 +41,7 @@ jobs:
           ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
           ECR_REPOSITORY: dev/task-tracker-app-backend
         run: |
-          docker build -t $ECR_REPOSITORY:latest .
+          docker buildx build --load -t $ECR_REPOSITORY:latest .
           docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
@@ -69,7 +69,7 @@ jobs:
       - name: Run frontend tests
         run: npm test --if-present -- --watchAll=false
       - name: Build frontend Docker image
-        run: docker build -t dev/task-tracker-app-frontend:latest .
+        run: docker buildx build --load -t dev/task-tracker-app-frontend:latest .
       - name: Log in to Amazon ECR
         id: login-ecr-frontend
         uses: aws-actions/amazon-ecr-login@v2
@@ -80,7 +80,7 @@ jobs:
           ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
           ECR_REPOSITORY: dev/task-tracker-app-frontend
         run: |
-          docker build -t $ECR_REPOSITORY:latest .
+          docker buildx build --load -t $ECR_REPOSITORY:latest .
           docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
