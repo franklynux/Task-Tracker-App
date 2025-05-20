@@ -31,8 +31,14 @@ jobs:
         run: npm test --if-present
       - name: Build backend Docker image
         run: docker buildx build --load -t dev/task-tracker-app-backend:latest .
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
       - name: Log in to Amazon ECR
-        id: login-ecr
+        id: login-ecr-backend
         uses: aws-actions/amazon-ecr-login@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -70,6 +76,12 @@ jobs:
         run: npm test --if-present -- --watchAll=false
       - name: Build frontend Docker image
         run: docker buildx build --load -t dev/task-tracker-app-frontend:latest .
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
       - name: Log in to Amazon ECR
         id: login-ecr-frontend
         uses: aws-actions/amazon-ecr-login@v2
