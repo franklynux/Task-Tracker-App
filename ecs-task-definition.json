@@ -24,7 +24,7 @@
       ],
       "essential": true,
       "environment": [
-        { "name": "REACT_APP_API_URL", "value": "http://<backend-service-endpoint>:3000" }
+        { "name": "REACT_APP_API_URL", "value": "http://localhost:3000" }
       ]
     }
   ]
