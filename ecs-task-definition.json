@@ -1,31 +1,118 @@
 {
-  "family": "task-tracker-app",
-  "networkMode": "awsvpc",
-  "requiresCompatibilities": ["FARGATE"],
-  "cpu": "512",
-  "memory": "1024",
-  "containerDefinitions": [
-    {
-      "name": "backend",
-      "image": "<ECR_REGISTRY>/<ECR_REPOSITORY_BACKEND>:latest",
-      "portMappings": [
-        { "containerPort": 3000, "hostPort": 3000 }
-      ],
-      "essential": true,
-      "environment": [
-        { "name": "NODE_ENV", "value": "production" }
-      ]
+    "family": "Task-Tracker-App",
+    "containerDefinitions": [
+        {
+            "name": "backend",
+            "image": "536697239284.dkr.ecr.us-east-1.amazonaws.com/dev/task-tracker-app-backend:latest",
+            "cpu": 512,
+            "memory": 1024,
+            "memoryReservation": 512,
+            "portMappings": [
+                {
+                    "name": "backend-container-port",
+                    "containerPort": 3000,
+                    "hostPort": 3000,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "NODE_ENV",
+                    "value": "development"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/Task-Tracker-App",
+                    "mode": "non-blocking",
+                    "awslogs-create-group": "true",
+                    "max-buffer-size": "25m",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "healthCheck": {
+                "command": [
+                    "CMD-SHELL",
+                    "curl -f http://localhost:3000/health || exit 1"
+                ],
+                "interval": 30,
+                "timeout": 5,
+                "retries": 3,
+                "startPeriod": 10
+            },
+            "systemControls": []
+        },
+        {
+            "name": "frontend",
+            "image": "536697239284.dkr.ecr.us-east-1.amazonaws.com/dev/task-tracker-app-frontend",
+            "cpu": 256,
+            "memory": 512,
+            "portMappings": [
+                {
+                    "name": "frontend-container-port",
+                    "containerPort": 80,
+                    "hostPort": 80,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "REACT_APP_API_URL",
+                    "value": "http://localhost:3000"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "dependsOn": [
+                {
+                    "containerName": "backend",
+                    "condition": "START"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/Task-Tracker-App",
+                    "mode": "non-blocking",
+                    "awslogs-create-group": "true",
+                    "max-buffer-size": "25m",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
+        }
+    ],
+    "executionRoleArn": "arn:aws:iam::536697239284:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "volumes": [],
+    "placementConstraints": [],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "768",
+    "memory": "1536",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
     },
-    {
-      "name": "frontend",
-      "image": "<ECR_REGISTRY>/<ECR_REPOSITORY_FRONTEND>:latest",
-      "portMappings": [
-        { "containerPort": 80, "hostPort": 80 }
-      ],
-      "essential": true,
-      "environment": [
-        { "name": "REACT_APP_API_URL", "value": "http://localhost:3000" }
-      ]
-    }
-  ]
+    "enableFaultInjection": false,
+    "tags": [
+        {
+            "key": "Environment",
+            "value": "Development"
+        }
+    ]
 }
