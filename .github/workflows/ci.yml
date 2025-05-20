@@ -14,13 +14,6 @@ jobs:
         working-directory: ./backend
     steps:
       - uses: actions/checkout@v4
-      - name: Cache node modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-backend-node-${{ hashFiles('backend/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-backend-node-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -29,15 +22,8 @@ jobs:
         run: npm install
       - name: Run backend tests
         run: npm test --if-present
-      - name: Cache Docker layers
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-backend-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-backend-
       - name: Build backend Docker image
-        run: docker buildx build --load --cache-from type=local,src=/tmp/.buildx-cache --cache-to type=local,dest=/tmp/.buildx-cache,mode=max -t dev/task-tracker-app-backend:latest .
+        run: docker buildx build --load -t dev/task-tracker-app-backend:latest .
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -66,13 +52,6 @@ jobs:
         working-directory: ./frontend
     steps:
       - uses: actions/checkout@v4
-      - name: Cache node modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-frontend-node-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -81,15 +60,8 @@ jobs:
         run: npm install
       - name: Run frontend tests
         run: npm test --if-present -- --watchAll=false
-      - name: Cache Docker layers
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-frontend-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-frontend-
       - name: Build frontend Docker image
-        run: docker buildx build --load --cache-from type=local,src=/tmp/.buildx-cache --cache-to type=local,dest=/tmp/.buildx-cache,mode=max -t dev/task-tracker-app-frontend:latest .
+        run: docker buildx build --load -t dev/task-tracker-app-frontend:latest .
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
