@@ -181,10 +181,7 @@
             "name": "prometheus-data"
         },
         {
-            "name": "grafana-data",
-            "host": {
-                "sourcePath": "/tmp/grafana-data"
-            }
+            "name": "grafana-data"
         }
     ],
     "placementConstraints": [],
