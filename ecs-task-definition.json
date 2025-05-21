@@ -111,12 +111,6 @@
                 }
             ],
             "essential": true,
-            "mountPoints": [
-                {
-                    "sourceVolume": "prometheus-data",
-                    "containerPath": "/prometheus"
-                }
-            ],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
@@ -157,33 +151,12 @@
                     "awslogs-region": "us-east-1",
                     "awslogs-stream-prefix": "grafana"
                 }
-            },
-            "linuxParameters": {
-                "tmpfs": [
-                    {
-                        "containerPath": "/var/lib/grafana",
-                        "size": 512,
-                        "mountOptions": [
-                            "rw",
-                            "nosuid",
-                            "nodev"
-                        ]
-                    }
-                ]
-            },
-            "mountPoints": []
+            }
         }
     ],
     "executionRoleArn": "arn:aws:iam::536697239284:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "volumes": [
-        {
-            "name": "prometheus-data"
-        },
-        {
-            "name": "grafana-data"
-        }
-    ],
+    "volumes": [],
     "placementConstraints": [],
     "requiresCompatibilities": [
         "FARGATE"
