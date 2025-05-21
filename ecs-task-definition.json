@@ -21,6 +21,10 @@
                 {
                     "name": "NODE_ENV",
                     "value": "development"
+                },
+                {
+                    "name": "MONGODB_URI",
+                    "value": "mongodb+srv://franklynux:admin123@testcluster.40akg.mongodb.net/"
                 }
             ],
             "environmentFiles": [],
