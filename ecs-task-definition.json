@@ -129,6 +129,7 @@
         {
             "name": "grafana",
             "image": "grafana/grafana:latest",
+            "user": "472",
             "cpu": 256,
             "memory": 512,
             "portMappings": [
