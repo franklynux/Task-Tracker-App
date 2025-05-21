@@ -165,16 +165,10 @@
     "networkMode": "awsvpc",
     "volumes": [
         {
-            "name": "prometheus-data",
-            "host": {
-                "sourcePath": "/ecs/prometheus-data"
-            }
+            "name": "prometheus-data"
         },
         {
-            "name": "grafana-data",
-            "host": {
-                "sourcePath": "/ecs/grafana-data"
-            }
+            "name": "grafana-data"
         }
     ],
     "placementConstraints": [],
