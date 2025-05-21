@@ -93,17 +93,96 @@
                 "secretOptions": []
             },
             "systemControls": []
+        },
+        {
+            "name": "prometheus",
+            "image": "prom/prometheus:latest",
+            "cpu": 256,
+            "memory": 512,
+            "portMappings": [
+                {
+                    "containerPort": 9090,
+                    "hostPort": 9090,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "mountPoints": [
+                {
+                    "sourceVolume": "prometheus-data",
+                    "containerPath": "/prometheus"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/Task-Tracker-App",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "prometheus"
+                }
+            }
+        },
+        {
+            "name": "grafana",
+            "image": "grafana/grafana:latest",
+            "cpu": 256,
+            "memory": 512,
+            "portMappings": [
+                {
+                    "containerPort": 3000,
+                    "hostPort": 3001,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "mountPoints": [
+                {
+                    "sourceVolume": "grafana-data",
+                    "containerPath": "/var/lib/grafana"
+                }
+            ],
+            "environment": [
+                {
+                    "name": "GF_SECURITY_ADMIN_USER",
+                    "value": "franklynux"
+                },
+                {
+                    "name": "GF_SECURITY_ADMIN_PASSWORD",
+                    "value": "admin123"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/Task-Tracker-App",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "grafana"
+                }
+            }
         }
     ],
     "executionRoleArn": "arn:aws:iam::536697239284:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "volumes": [],
+    "volumes": [
+        {
+            "name": "prometheus-data",
+            "host": {
+                "sourcePath": "/ecs/prometheus-data"
+            }
+        },
+        {
+            "name": "grafana-data",
+            "host": {
+                "sourcePath": "/ecs/grafana-data"
+            }
+        }
+    ],
     "placementConstraints": [],
     "requiresCompatibilities": [
         "FARGATE"
     ],
-    "cpu": "1024",
-    "memory": "2048",
+    "cpu": "2048",
+    "memory": "3072",
     "runtimePlatform": {
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
