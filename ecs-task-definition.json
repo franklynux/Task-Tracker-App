@@ -68,7 +68,7 @@
             "environment": [
                 {
                     "name": "REACT_APP_API_URL",
-                    "value": "http://localhost:3000"
+                    "value": "http://backend:3000"
                 }
             ],
             "environmentFiles": [],
@@ -129,7 +129,7 @@
             "memory": 512,
             "portMappings": [
                 {
-                    "containerPort": 3000,
+                    "containerPort": 3001,
                     "hostPort": 3001,
                     "protocol": "tcp"
                 }
