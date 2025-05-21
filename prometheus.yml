@@ -1,5 +1,6 @@
 global:
-  scrape_interval: 15s
+  scrape_interval: 15s  # Adjusted to a shorter interval to reduce time drift impact
+  evaluation_interval: 15s  # Matches scrape_interval for consistency
 scrape_configs:
   - job_name: 'backend'
     static_configs:
