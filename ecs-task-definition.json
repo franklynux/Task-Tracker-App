@@ -163,6 +163,19 @@
                     "awslogs-region": "us-east-1",
                     "awslogs-stream-prefix": "grafana"
                 }
+            },
+            "linuxParameters": {
+                "tmpfs": [
+                    {
+                        "containerPath": "/var/lib/grafana",
+                        "size": 512,
+                        "mountOptions": [
+                            "rw",
+                            "nosuid",
+                            "nodev"
+                        ]
+                    }
+                ]
             }
         }
     ],
@@ -173,7 +186,10 @@
             "name": "prometheus-data"
         },
         {
-            "name": "grafana-data"
+            "name": "grafana-data",
+            "host": {
+                "sourcePath": "/tmp/grafana-data"
+            }
         }
     ],
     "placementConstraints": [],
