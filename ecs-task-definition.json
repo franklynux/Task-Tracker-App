@@ -142,6 +142,10 @@
                 {
                     "name": "GF_SECURITY_ADMIN_PASSWORD",
                     "value": "admin123"
+                },
+                {
+                    "name": "GF_SERVER_HTTP_PORT",
+                    "value": "3001"
                 }
             ],
             "logConfiguration": {
