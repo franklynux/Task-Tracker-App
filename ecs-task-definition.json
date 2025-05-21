@@ -140,12 +140,6 @@
                 }
             ],
             "essential": true,
-            "mountPoints": [
-                {
-                    "sourceVolume": "grafana-data",
-                    "containerPath": "/var/lib/grafana"
-                }
-            ],
             "environment": [
                 {
                     "name": "GF_SECURITY_ADMIN_USER",
@@ -176,7 +170,8 @@
                         ]
                     }
                 ]
-            }
+            },
+            "mountPoints": []
         }
     ],
     "executionRoleArn": "arn:aws:iam::536697239284:role/ecsTaskExecutionRole",
